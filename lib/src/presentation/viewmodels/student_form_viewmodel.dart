@@ -52,9 +52,13 @@ class StudentFormViewModel {
         birthDate.value,
         ratings.value,
       );
-      final result = await useCase.execute();
       await submitCommand.call(useCase);
-      return result;
+      final result = submitCommand.state.value;
+      if (result is SuccessCommandState<Student>) {
+        facade.lastCreatedStudent.value = result.data;
+        return Success(result.data);
+      }
+      return const Failure('Erro ao criar aluno');
     } else {
       final useCase = facade.updateStudentUseCase(
         editingStudent!.id!,
@@ -65,9 +69,13 @@ class StudentFormViewModel {
         birthDate.value,
         ratings.value,
       );
-      final result = await useCase.execute();
       await submitCommand.call(useCase);
-      return result;
+      final result = submitCommand.state.value;
+      if (result is SuccessCommandState<Student>) {
+        facade.lastCreatedStudent.value = result.data;
+        return Success(result.data);
+      }
+      return const Failure('Erro ao atualizar aluno');
     }
   }
 

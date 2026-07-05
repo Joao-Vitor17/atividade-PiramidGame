@@ -1,9 +1,11 @@
+import 'package:signals_flutter/signals_flutter.dart';
 import '../usecases/student_usecases.dart';
 import '../../data/repositories/student_repository.dart';
 import '../entities/student.dart';
 
 class StudentFacade {
   final IStudentRepository repository;
+  late final Signal<Student?> lastCreatedStudent = signal(null);
 
   late final CreateStudentUseCase createStudent;
   late final GetAllStudentsUseCase getAllStudents;

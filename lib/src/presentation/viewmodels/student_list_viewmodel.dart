@@ -1,7 +1,6 @@
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:flutter/foundation.dart';
 import '../../core/patterns/command.dart';
-import '../../core/patterns/result.dart';
 import '../../domain/facades/student_facade.dart';
 import '../../domain/entities/student.dart';
 
@@ -16,6 +15,11 @@ class StudentListViewModel {
 
   void _initialize() {
     loadStudents();
+    // Effect para reagir quando um novo aluno é criado/atualizado
+    effect(() {
+      facade.lastCreatedStudent.value; // Observa mudanças neste signal
+      loadStudents();
+    });
   }
 
   Future<void> loadStudents() async {
