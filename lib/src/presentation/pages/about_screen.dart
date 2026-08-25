@@ -109,7 +109,7 @@ class AboutScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'Todos os dados são armazenados localmente no seu dispositivo utilizando SharedPreferences. Isso significa que suas informações permanecem privadas e não são enviadas para servidores externos.',
+              'Todos os dados são armazenados localmente no seu dispositivo utilizando SQLite. Isso significa que suas informações permanecem privadas e não são enviadas para servidores externos.',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             SizedBox(height: 24),

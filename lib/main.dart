@@ -5,6 +5,7 @@ import 'src/core/constants/app_constants.dart';
 import 'src/data/services/storage_service.dart';
 import 'src/data/repositories/student_repository.dart';
 import 'src/domain/facades/student_facade.dart';
+import 'src/data/database/db_init.dart';
 import 'src/presentation/routes/app_router.dart';
 import 'src/presentation/theme/app_theme.dart';
 import 'src/presentation/viewmodels/theme_viewmodel.dart';
@@ -12,8 +13,11 @@ import 'src/presentation/viewmodels/theme_viewmodel.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize SharedPreferences
-  final storageService = SharedPreferencesService();
+  // Initialize database factory for the current platform (web/io)
+  await initDatabase();
+
+  // Initialize SQLite Storage
+  final storageService = SQLiteStorageService();
   await storageService.initialize();
 
   // Setup dependencies
