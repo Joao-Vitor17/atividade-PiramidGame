@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "157750067352",
+    "project_id": "piramid-game-217ae",
+    "storage_bucket": "piramid-game-217ae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157750067352:android:817554a2305c60695790ed",
+        "android_client_info": {
+          "package_name": "com.example.piramidgame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtOI3ku9tXDZ0f5zzkuZwFWzB9c0JoFbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

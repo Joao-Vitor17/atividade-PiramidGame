@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:piramidgame/firebase_options.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import 'src/core/constants/app_constants.dart';
 import 'src/data/services/storage_service.dart';
@@ -12,6 +14,10 @@ import 'src/presentation/viewmodels/theme_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // Initialize database factory for the current platform (web/io)
   await initDatabase();
