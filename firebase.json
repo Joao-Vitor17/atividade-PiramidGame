@@ -1,1 +1,27 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"piramid-game-217ae","appId":"1:157750067352:android:817554a2305c60695790ed","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"piramid-game-217ae","configurations":{"android":"1:157750067352:android:817554a2305c60695790ed","ios":"1:157750067352:ios:676ca1a03e9c64a35790ed","web":"1:157750067352:web:5a1de0c81be6aac85790ed","windows":"1:157750067352:web:51602e461f2c0c225790ed"}}}}}}
+{
+	"firestore": {
+		"rules": "firestore.rules"
+	},
+	"flutter": {
+		"platforms": {
+			"android": {
+				"default": {
+					"projectId": "piramid-game-217ae",
+					"appId": "1:157750067352:android:817554a2305c60695790ed",
+					"fileOutput": "android/app/google-services.json"
+				}
+			},
+			"dart": {
+				"lib/firebase_options.dart": {
+					"projectId": "piramid-game-217ae",
+					"configurations": {
+						"android": "1:157750067352:android:817554a2305c60695790ed",
+						"ios": "1:157750067352:ios:676ca1a03e9c64a35790ed",
+						"web": "1:157750067352:web:5a1de0c81be6aac85790ed",
+						"windows": "1:157750067352:web:51602e461f2c0c225790ed"
+					}
+				}
+			}
+		}
+	}
+}

@@ -17,8 +17,7 @@ class StudentListViewModel {
     loadStudents();
     // Effect para reagir quando um novo aluno é criado/atualizado
     effect(() {
-      facade.lastCreatedStudent.value; // Observa mudanças neste signal
-      loadStudents();
+      if (facade.lastChangedPerson.value != null) loadStudents();
     });
   }
 

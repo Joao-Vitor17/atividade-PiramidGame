@@ -4,7 +4,6 @@ class AppConstants {
   static const String campus = 'IFPR – Campus Paranaguá';
 
   // Shared Preferences Keys
-  static const String studentListKey = 'students_list';
   static const String themeKey = 'theme_mode';
 
   // Courses

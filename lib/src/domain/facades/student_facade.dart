@@ -2,50 +2,37 @@ import 'package:signals_flutter/signals_flutter.dart';
 import '../usecases/student_usecases.dart';
 import '../../data/repositories/student_repository.dart';
 import '../entities/student.dart';
+import 'auth_facade.dart';
 
 class StudentFacade {
   final IStudentRepository repository;
-  late final Signal<Student?> lastCreatedStudent = signal(null);
+  final AuthFacade authFacade;
+  late final Signal<Student?> lastChangedPerson = signal(null);
 
-  late final CreateStudentUseCase createStudent;
-  late final GetAllStudentsUseCase getAllStudents;
-  late final GetStudentByIdUseCase getStudentById;
-  late final UpdateStudentUseCase updateStudent;
-  late final DeleteStudentUseCase deleteStudent;
-  late final CalculateRankingUseCase calculateRanking;
+  StudentFacade({required this.repository, required this.authFacade});
 
-  StudentFacade(this.repository) {
-    createStudent = CreateStudentUseCase(repository: repository, student: _dummyStudent());
-    getAllStudents = GetAllStudentsUseCase(repository);
-    getStudentById = GetStudentByIdUseCase(repository: repository, studentId: '');
-    updateStudent = UpdateStudentUseCase(repository: repository, student: _dummyStudent());
-    deleteStudent = DeleteStudentUseCase(repository: repository, studentId: '');
-    calculateRanking = CalculateRankingUseCase(repository);
-  }
-
-  // Helper methods
   CreateStudentUseCase createStudentUseCase(
     String name,
     String course,
     int year,
     String nickname,
     DateTime birthDate,
-    List<int> ratings,
-  ) {
-    final student = Student(
-      name: name,
-      course: course,
-      year: year,
-      nickname: nickname,
-      birthDate: birthDate,
-      ratings: ratings,
-    );
-    return CreateStudentUseCase(repository: repository, student: student);
-  }
+  ) => CreateStudentUseCase(
+        repository: repository,
+        student: Student(
+          name: name,
+          course: course,
+          year: year,
+          nickname: nickname,
+          birthDate: birthDate,
+          createdBy: authFacade.currentUser?.uid,
+        ),
+      );
 
-  GetStudentByIdUseCase getStudentByIdUseCase(String studentId) {
-    return GetStudentByIdUseCase(repository: repository, studentId: studentId);
-  }
+  GetAllStudentsUseCase get getAllStudents => GetAllStudentsUseCase(repository);
+
+  GetStudentByIdUseCase getStudentByIdUseCase(String id) =>
+      GetStudentByIdUseCase(repository: repository, studentId: id);
 
   UpdateStudentUseCase updateStudentUseCase(
     String id,
@@ -54,32 +41,19 @@ class StudentFacade {
     int year,
     String nickname,
     DateTime birthDate,
-    List<int> ratings,
-  ) {
-    final student = Student(
-      id: id,
-      name: name,
-      course: course,
-      year: year,
-      nickname: nickname,
-      birthDate: birthDate,
-      ratings: ratings,
-    );
-    return UpdateStudentUseCase(repository: repository, student: student);
-  }
+  ) => UpdateStudentUseCase(
+        repository: repository,
+        student: Student(
+          id: id,
+          name: name,
+          course: course,
+          year: year,
+          nickname: nickname,
+          birthDate: birthDate,
+          createdBy: authFacade.currentUser?.uid,
+        ),
+      );
 
-  DeleteStudentUseCase deleteStudentUseCase(String studentId) {
-    return DeleteStudentUseCase(repository: repository, studentId: studentId);
-  }
-}
-
-Student _dummyStudent() {
-  return Student(
-    name: '',
-    course: 'INFO',
-    year: 2024,
-    nickname: '',
-    birthDate: DateTime.now(),
-    ratings: List.filled(15, 1),
-  );
+  DeleteStudentUseCase deleteStudentUseCase(String id) =>
+      DeleteStudentUseCase(repository: repository, studentId: id);
 }

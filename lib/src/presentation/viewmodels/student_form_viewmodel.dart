@@ -14,7 +14,6 @@ class StudentFormViewModel {
   late final Signal<String> course = signal(AppConstants.courses.first);
   late final Signal<int> year = signal(AppConstants.maxYear);
   late final Signal<DateTime> birthDate = signal(DateTime.now());
-  late final Signal<List<int>> ratings = signal(List<int>.filled(15, 3));
 
   late final CommandNotifier<Student> submitCommand = CommandNotifier();
 
@@ -33,13 +32,6 @@ class StudentFormViewModel {
     course.value = student.course;
     year.value = student.year;
     birthDate.value = student.birthDate;
-    ratings.value = List<int>.from(student.ratings);
-  }
-
-  void updateRating(int index, int value) {
-    final newRatings = List<int>.from(ratings.value);
-    newRatings[index] = value;
-    ratings.value = newRatings;
   }
 
   Future<Result<Student>> submit() async {
@@ -50,12 +42,11 @@ class StudentFormViewModel {
         year.value,
         nickname.value,
         birthDate.value,
-        ratings.value,
       );
       await submitCommand.call(useCase);
       final result = submitCommand.state.value;
       if (result is SuccessCommandState<Student>) {
-        facade.lastCreatedStudent.value = result.data;
+        facade.lastChangedPerson.value = result.data;
         return Success(result.data);
       }
       return const Failure('Erro ao criar aluno');
@@ -67,12 +58,11 @@ class StudentFormViewModel {
         year.value,
         nickname.value,
         birthDate.value,
-        ratings.value,
       );
       await submitCommand.call(useCase);
       final result = submitCommand.state.value;
       if (result is SuccessCommandState<Student>) {
-        facade.lastCreatedStudent.value = result.data;
+        facade.lastChangedPerson.value = result.data;
         return Success(result.data);
       }
       return const Failure('Erro ao atualizar aluno');
@@ -80,11 +70,7 @@ class StudentFormViewModel {
   }
 
   bool get isFormValid {
-    return name.value.isNotEmpty && ratings.value.every((r) => r >= 1 && r <= 5);
-  }
-
-  int get totalPoints {
-    return ratings.value.fold(0, (sum, rating) => sum + rating);
+    return name.value.trim().isNotEmpty;
   }
 
   bool get isLoading => submitCommand.state.value.isLoading;

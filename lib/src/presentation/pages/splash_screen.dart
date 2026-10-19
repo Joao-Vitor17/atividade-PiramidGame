@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_constants.dart';
+import '../../domain/facades/auth_facade.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final AuthFacade authFacade;
+
+  const SplashScreen({required this.authFacade, super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -13,14 +16,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateToHome();
+    _resolveSession();
   }
 
-  _navigateToHome() async {
-    await Future.delayed(Duration(seconds: 3), () {});
-    if (mounted) {
-      context.go('/home');
-    }
+  Future<void> _resolveSession() async {
+    final result = await widget.authFacade.checkAuth().execute();
+    if (!mounted) return;
+    result.fold(
+      (_) => context.go('/login'),
+      (user) => context.go(user == null ? '/login' : '/home'),
+    );
   }
 
   @override

@@ -95,7 +95,20 @@ class AboutScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'A soma das notas forma o "Nível Lenda", que varia de 15 pontos (mínimo: 1 estrela em cada critério) até 75 pontos (máximo: 5 estrelas em cada critério). Este valor é usado para organizar o ranking geral.',
+              'A soma das 15 notas forma o "Nível Lenda", de 15 a 75 pontos. O ranking pessoal considera somente as avaliações feitas por você. O ranking global calcula a média das avaliações recebidas por cada pessoa e exibe também a quantidade de avaliações.',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            SizedBox(height: 24),
+
+            Text(
+              'Contas e avaliações',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Entre com e-mail e senha ou com uma conta Google. Cada conta pode manter uma avaliação por pessoa e editá-la depois. Vincule seu perfil de pessoa à conta para que o sistema bloqueie a autoavaliação.',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             SizedBox(height: 24),
@@ -109,7 +122,7 @@ class AboutScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'Todos os dados são armazenados localmente no seu dispositivo utilizando SQLite. Isso significa que suas informações permanecem privadas e não são enviadas para servidores externos.',
+              'Perfis e avaliações são armazenados no Cloud Firestore e associados à sua conta Firebase. A preferência de tema é salva localmente no dispositivo.',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             SizedBox(height: 24),

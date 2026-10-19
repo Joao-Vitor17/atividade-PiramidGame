@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function validRatings(r) {
+      return r is list && r.size() == 15
+        && r[0] >= 1 && r[0] <= 5 && r[1] >= 1 && r[1] <= 5
+        && r[2] >= 1 && r[2] <= 5 && r[3] >= 1 && r[3] <= 5
+        && r[4] >= 1 && r[4] <= 5 && r[5] >= 1 && r[5] <= 5
+        && r[6] >= 1 && r[6] <= 5 && r[7] >= 1 && r[7] <= 5
+        && r[8] >= 1 && r[8] <= 5 && r[9] >= 1 && r[9] <= 5
+        && r[10] >= 1 && r[10] <= 5 && r[11] >= 1 && r[11] <= 5
+        && r[12] >= 1 && r[12] <= 5 && r[13] >= 1 && r[13] <= 5
+        && r[14] >= 1 && r[14] <= 5;
+    }
+
+    function score(r) {
+      return r[0] + r[1] + r[2] + r[3] + r[4] + r[5] + r[6] + r[7]
+        + r[8] + r[9] + r[10] + r[11] + r[12] + r[13] + r[14];
+    }
+
+    function validPerson(data) {
+      return data.name is string && data.name.size() > 0
+        && data.nickname is string
+        && data.course in ['INFO', 'MEC', 'MAMB', 'PROD', 'TADS', 'TGA']
+        && data.year is int && data.year >= 1998 && data.year <= 2026
+        && data.birthDate is string;
+    }
+
+    match /users/{userId} {
+      allow read, create, update: if signedIn() && request.auth.uid == userId;
+      allow delete: if false;
+
+      match /assessments/{personId} {
+        allow read: if signedIn();
+        allow create, update: if signedIn()
+          && request.auth.uid == userId
+          && request.resource.data.evaluatorUid == userId
+          && request.resource.data.personId == personId
+          && exists(/databases/$(database)/documents/people/$(personId))
+          && get(/databases/$(database)/documents/users/$(userId)).data.personId is string
+          && get(/databases/$(database)/documents/users/$(userId)).data.personId != personId
+          && validRatings(request.resource.data.ratings)
+          && request.resource.data.totalPoints == score(request.resource.data.ratings);
+        allow delete: if signedIn()
+          && (request.auth.uid == userId
+            || !exists(/databases/$(database)/documents/people/$(personId)));
+      }
+    }
+
+    match /{path=**}/assessments/{personId} {
+      allow read: if signedIn();
+    }
+
+    match /people/{personId} {
+      allow read, delete: if signedIn();
+      allow create, update: if signedIn() && validPerson(request.resource.data);
+    }
+  }
+}

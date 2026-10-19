@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import '../../core/constants/app_constants.dart';
 import '../viewmodels/student_form_viewmodel.dart';
-import '../widgets/rating_stars.dart';
 
 class StudentFormScreen extends StatefulWidget {
   final StudentFormViewModel viewModel;
@@ -39,7 +38,7 @@ class _StudentFormScreenState extends State<StudentFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.viewModel.editingStudent == null ? 'Novo Aluno' : 'Editar Aluno'),
+        title: Text(widget.viewModel.editingStudent == null ? 'Nova pessoa' : 'Editar pessoa'),
       ),
       body: SignalBuilder(
         builder: (_) {
@@ -160,78 +159,6 @@ class _StudentFormScreenState extends State<StudentFormScreen> {
                 ),
                 SizedBox(height: 24),
 
-                // Rating Criteria
-                Text(
-                  'Critérios de Popularidade *',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                SizedBox(height: 12),
-                SignalBuilder(
-                  builder: (_) => Column(
-                    children: List.generate(
-                      AppConstants.ratingCriteria.length,
-                      (index) => Padding(
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${index + 1}. ${AppConstants.ratingCriteria[index]}',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              AppConstants.ratingDescriptions[index],
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Colors.grey[600],
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            RatingStars(
-                              initialRating: widget.viewModel.ratings.value[index],
-                              onRatingChanged: (rating) {
-                                widget.viewModel.updateRating(index, rating);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 24),
-
-                // Total Points
-                SignalBuilder(
-                  builder: (_) => Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.deepPurple[50],
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.deepPurple),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Nível Lenda Total:',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        Text(
-                          '${widget.viewModel.totalPoints} / ${AppConstants.maxPoints}',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: Colors.deepPurple,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 24),
-
                 // Submit Button
                 SizedBox(
                   width: double.infinity,
@@ -239,7 +166,7 @@ class _StudentFormScreenState extends State<StudentFormScreen> {
                     onPressed: widget.viewModel.isFormValid
                         ? () async {
                             final result = await widget.viewModel.submit();
-                            if (mounted) {
+                            if (context.mounted) {
                               if (result.valueOrNull != null) {
                                 context.pop();
                               } else if (result.failureOrNull != null) {
@@ -254,8 +181,8 @@ class _StudentFormScreenState extends State<StudentFormScreen> {
                           }
                         : null,
                     child: Text(
-                      widget.viewModel.editingStudent == null
-                          ? 'Cadastrar Aluno'
+                        widget.viewModel.editingStudent == null
+                          ? 'Cadastrar Pessoa'
                           : 'Salvar Alterações',
                       style: TextStyle(fontSize: 16),
                     ),

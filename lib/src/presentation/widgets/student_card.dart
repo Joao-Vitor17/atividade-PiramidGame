@@ -47,21 +47,6 @@ class StudentCard extends StatelessWidget {
                               color: Colors.grey[600],
                             ),
                       ),
-                    SizedBox(height: 8),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.deepPurple,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        'Nível Lenda: ${student.totalPoints}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),

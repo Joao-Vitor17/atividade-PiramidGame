@@ -19,11 +19,7 @@ class CreateStudentUseCase implements Command<Student> {
       if (student.name.isEmpty) {
         return Failure('Nome do aluno é obrigatório');
       }
-      if (student.ratings.any((r) => r < 1 || r > 5)) {
-        return Failure('Todas as notas devem estar entre 1 e 5');
-      }
-      await repository.addStudent(student);
-      return Success(student);
+      return Success(await repository.addStudent(student));
     } catch (e) {
       return Failure('Erro ao criar aluno', exception: e as Exception);
     }
@@ -87,9 +83,6 @@ class UpdateStudentUseCase implements Command<Student> {
       if (student.name.isEmpty) {
         return Failure('Nome do aluno é obrigatório');
       }
-      if (student.ratings.any((r) => r < 1 || r > 5)) {
-        return Failure('Todas as notas devem estar entre 1 e 5');
-      }
       await repository.updateStudent(student);
       return Success(student);
     } catch (e) {
@@ -119,20 +112,3 @@ class DeleteStudentUseCase implements Command<void> {
   }
 }
 
-// Calculate Ranking Use Case
-class CalculateRankingUseCase implements Command<List<Student>> {
-  final IStudentRepository repository;
-
-  CalculateRankingUseCase(this.repository);
-
-  @override
-  Future<Result<List<Student>>> execute() async {
-    try {
-      final students = await repository.getAllStudents();
-      students.sort((a, b) => b.totalPoints.compareTo(a.totalPoints));
-      return Success(students);
-    } catch (e) {
-      return Failure('Erro ao calcular ranking', exception: e as Exception);
-    }
-  }
-}

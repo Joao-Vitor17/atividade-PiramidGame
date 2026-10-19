@@ -7,32 +7,71 @@ import '../pages/student_form_screen.dart';
 import '../pages/student_detail_screen.dart';
 import '../pages/ranking_screen.dart';
 import '../pages/home_screen.dart';
+import '../pages/auth_screen.dart';
+import '../pages/assessment_screen.dart';
+import '../viewmodels/assessment_viewmodel.dart';
+import '../viewmodels/auth_viewmodel.dart';
 import '../viewmodels/student_list_viewmodel.dart';
 import '../viewmodels/student_form_viewmodel.dart';
 import '../viewmodels/student_detail_viewmodel.dart';
 import '../viewmodels/ranking_viewmodel.dart';
 import '../viewmodels/theme_viewmodel.dart';
 import '../../domain/facades/student_facade.dart';
+import '../../domain/facades/auth_facade.dart';
+import '../../domain/facades/assessment_facade.dart';
 import '../../domain/entities/student.dart';
 
 class AppRouter {
   static GoRouter createRouter({
+    required AuthFacade authFacade,
     required StudentFacade studentFacade,
+    required AssessmentFacade assessmentFacade,
     required ThemeViewModel themeViewModel,
   }) {
     return GoRouter(
       initialLocation: '/splash',
+      redirect: (context, state) {
+        final location = state.matchedLocation;
+        final isPublicRoute = location == '/splash' || location == '/login';
+        if (authFacade.currentUser == null && !isPublicRoute) return '/login';
+        if (authFacade.currentUser != null && location == '/login') return '/home';
+        return null;
+      },
       routes: [
         GoRoute(
           path: '/splash',
-          builder: (context, state) => const SplashScreen(),
+          builder: (context, state) => SplashScreen(authFacade: authFacade),
+        ),
+        GoRoute(
+          path: '/login',
+          builder: (context, state) => AuthScreen(
+            viewModel: AuthViewModel(facade: authFacade),
+          ),
         ),
         GoRoute(
           path: '/home',
           builder: (context, state) => HomeScreen(
             themeViewModel: themeViewModel,
             studentFacade: studentFacade,
+            authFacade: authFacade,
+            assessmentFacade: assessmentFacade,
           ),
+        ),
+        GoRoute(
+          path: '/assessment',
+          builder: (context, state) {
+            final person = state.extra as Student?;
+            if (person == null || person.id == null) {
+              return const Scaffold(body: Center(child: Text('Pessoa inválida')));
+            }
+            return AssessmentScreen(
+              person: person,
+              viewModel: AssessmentViewModel(
+                facade: assessmentFacade,
+                personId: person.id!,
+              ),
+            );
+          },
         ),
         GoRoute(
           path: '/about',
@@ -76,7 +115,7 @@ class AppRouter {
         GoRoute(
           path: '/ranking',
           builder: (context, state) {
-            final viewModel = RankingViewModel(facade: studentFacade);
+            final viewModel = RankingViewModel(facade: assessmentFacade);
             return RankingScreen(viewModel: viewModel);
           },
         ),

@@ -1,4 +1,3 @@
-import 'package:signals_flutter/signals_flutter.dart';
 import '../../core/patterns/command.dart';
 import '../../domain/facades/student_facade.dart';
 import '../../domain/entities/student.dart';

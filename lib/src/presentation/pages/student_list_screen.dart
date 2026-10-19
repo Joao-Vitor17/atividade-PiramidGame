@@ -20,14 +20,13 @@ class _StudentListScreenState extends State<StudentListScreen> {
   @override
   void initState() {
     super.initState();
-    widget.viewModel.loadStudents();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Alunos Cadastrados'),
+        title: Text('Pessoas cadastradas'),
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
@@ -72,11 +71,11 @@ class _StudentListScreenState extends State<StudentListScreen> {
                     color: Colors.grey[400],
                   ),
                   SizedBox(height: 16),
-                  Text('Nenhum aluno cadastrado'),
+                  Text('Nenhuma pessoa cadastrada'),
                   SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () => context.push('/student-form'),
-                    child: Text('Cadastrar Primeiro Aluno'),
+                    child: Text('Cadastrar primeira pessoa'),
                   ),
                 ],
               ),

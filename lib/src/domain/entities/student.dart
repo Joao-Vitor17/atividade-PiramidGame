@@ -5,7 +5,7 @@ class Student {
   final int year;
   final String nickname;
   final DateTime birthDate;
-  final List<int> ratings; // 15 notas (1-5 stars cada)
+  final String? createdBy;
 
   Student({
     this.id,
@@ -14,12 +14,8 @@ class Student {
     required this.year,
     required this.nickname,
     required this.birthDate,
-    required this.ratings,
-  }) : assert(ratings.length == 15, 'Deve haver exatamente 15 notas');
-
-  int get totalPoints {
-    return ratings.fold(0, (sum, rating) => sum + rating);
-  }
+    this.createdBy,
+  });
 
   Student copyWith({
     String? id,
@@ -28,7 +24,7 @@ class Student {
     int? year,
     String? nickname,
     DateTime? birthDate,
-    List<int>? ratings,
+    String? createdBy,
   }) {
     return Student(
       id: id ?? this.id,
@@ -37,7 +33,7 @@ class Student {
       year: year ?? this.year,
       nickname: nickname ?? this.nickname,
       birthDate: birthDate ?? this.birthDate,
-      ratings: ratings ?? this.ratings,
+      createdBy: createdBy ?? this.createdBy,
     );
   }
 
@@ -49,7 +45,7 @@ class Student {
       'year': year,
       'nickname': nickname,
       'birthDate': birthDate.toIso8601String(),
-      'ratings': ratings,
+      'createdBy': createdBy,
     };
   }
 
@@ -61,7 +57,7 @@ class Student {
       year: map['year'],
       nickname: map['nickname'],
       birthDate: DateTime.parse(map['birthDate']),
-      ratings: List<int>.from(map['ratings']),
+      createdBy: map['createdBy'] as String?,
     );
   }
 }

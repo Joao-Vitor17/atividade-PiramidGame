@@ -15,3 +15,25 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Firebase setup
+
+Enable Email/Password and Google providers in Firebase Authentication. Add the
+Firestore security rules from `firestore.rules` to the project:
+
+```sh
+firebase deploy --only firestore:rules
+```
+
+For Google Sign-In on Android, register the app's SHA-1 certificate in Firebase,
+enable Google as an Authentication provider, and download the refreshed
+`google-services.json`. The current Android configuration has no OAuth clients.
+If the generated Android setup requires an explicit web client ID, run with:
+
+```sh
+flutter run --dart-define=GOOGLE_SERVER_CLIENT_ID=YOUR_WEB_CLIENT_ID
+```
+
+For web, add the deployed host to Firebase Authentication's authorized domains.
+Person profiles and assessments are stored in Firestore; only the theme
+preference is stored locally with SharedPreferences.
