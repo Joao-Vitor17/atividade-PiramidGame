@@ -41,6 +41,7 @@ class StudentFacade {
     int year,
     String nickname,
     DateTime birthDate,
+    String? photoUrl,
   ) => UpdateStudentUseCase(
         repository: repository,
         student: Student(
@@ -51,7 +52,17 @@ class StudentFacade {
           nickname: nickname,
           birthDate: birthDate,
           createdBy: authFacade.currentUser?.uid,
+          photoUrl: photoUrl,
         ),
+      );
+
+  UpdateStudentUseCase updateStudentPhotoUseCase(
+    Student student,
+    String photoUrl,
+  ) =>
+      UpdateStudentUseCase(
+        repository: repository,
+        student: student.copyWith(photoUrl: photoUrl),
       );
 
   DeleteStudentUseCase deleteStudentUseCase(String id) =>

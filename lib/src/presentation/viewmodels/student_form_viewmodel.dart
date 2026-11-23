@@ -58,6 +58,7 @@ class StudentFormViewModel {
         year.value,
         nickname.value,
         birthDate.value,
+        editingStudent!.photoUrl,
       );
       await submitCommand.call(useCase);
       final result = submitCommand.state.value;

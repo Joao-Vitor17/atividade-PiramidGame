@@ -6,6 +6,7 @@ class Student {
   final String nickname;
   final DateTime birthDate;
   final String? createdBy;
+  final String? photoUrl;
 
   Student({
     this.id,
@@ -15,6 +16,7 @@ class Student {
     required this.nickname,
     required this.birthDate,
     this.createdBy,
+    this.photoUrl,
   });
 
   Student copyWith({
@@ -25,6 +27,7 @@ class Student {
     String? nickname,
     DateTime? birthDate,
     String? createdBy,
+    String? photoUrl,
   }) {
     return Student(
       id: id ?? this.id,
@@ -34,6 +37,7 @@ class Student {
       nickname: nickname ?? this.nickname,
       birthDate: birthDate ?? this.birthDate,
       createdBy: createdBy ?? this.createdBy,
+      photoUrl: photoUrl ?? this.photoUrl,
     );
   }
 
@@ -46,6 +50,7 @@ class Student {
       'nickname': nickname,
       'birthDate': birthDate.toIso8601String(),
       'createdBy': createdBy,
+      'photoUrl': photoUrl,
     };
   }
 
@@ -58,6 +63,7 @@ class Student {
       nickname: map['nickname'],
       birthDate: DateTime.parse(map['birthDate']),
       createdBy: map['createdBy'] as String?,
+      photoUrl: map['photoUrl'] as String?,
     );
   }
 }

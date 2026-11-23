@@ -19,10 +19,12 @@ samples, guidance on mobile development, and a full API reference.
 ## Firebase setup
 
 Enable Email/Password and Google providers in Firebase Authentication. Add the
-Firestore security rules from `firestore.rules` to the project:
+Firestore and Storage security rules from `firestore.rules` and
+`firebase_storage.rules` to the project. Enable Firebase Storage in the Firebase
+console before uploading profile photos:
 
 ```sh
-firebase deploy --only firestore:rules
+firebase deploy --only firestore:rules,storage
 ```
 
 For Google Sign-In on Android, register the app's SHA-1 certificate in Firebase,
@@ -36,4 +38,6 @@ flutter run --dart-define=GOOGLE_SERVER_CLIENT_ID=YOUR_WEB_CLIENT_ID
 
 For web, add the deployed host to Firebase Authentication's authorized domains.
 Person profiles and assessments are stored in Firestore; only the theme
-preference is stored locally with SharedPreferences.
+preference is stored locally with SharedPreferences. Profile photos are saved in
+Firebase Storage, and their download URLs are stored with each person in
+Firestore.

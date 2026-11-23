@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/student.dart';
+import 'student_avatar.dart';
 
 class StudentCard extends StatelessWidget {
   final Student student;
@@ -24,6 +25,12 @@ class StudentCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              StudentAvatar(
+                name: student.name,
+                photoUrl: student.photoUrl,
+                radius: 26,
+              ),
+              SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

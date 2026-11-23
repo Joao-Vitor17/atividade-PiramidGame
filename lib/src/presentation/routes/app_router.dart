@@ -20,6 +20,7 @@ import '../../domain/facades/student_facade.dart';
 import '../../domain/facades/auth_facade.dart';
 import '../../domain/facades/assessment_facade.dart';
 import '../../domain/entities/student.dart';
+import '../../data/services/student_photo_storage_service.dart';
 
 class AppRouter {
   static GoRouter createRouter({
@@ -107,6 +108,7 @@ class AppRouter {
             }
             final viewModel = StudentDetailViewModel(
               facade: studentFacade,
+              photoStorageService: StudentPhotoStorageService(),
               studentId: studentId,
             );
             return StudentDetailScreen(viewModel: viewModel);

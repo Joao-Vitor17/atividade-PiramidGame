@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import '../viewmodels/student_detail_viewmodel.dart';
+import '../widgets/student_avatar.dart';
 
 class StudentDetailScreen extends StatelessWidget {
   final StudentDetailViewModel viewModel;
@@ -39,10 +40,17 @@ class StudentDetailScreen extends StatelessWidget {
           return ListView(
             padding: const EdgeInsets.all(20),
             children: [
-              CircleAvatar(
-                radius: 42,
-                child: Text(person.name.isEmpty ? '?' : person.name[0].toUpperCase(),
-                    style: Theme.of(context).textTheme.headlineMedium),
+              Center(
+                child: SignalBuilder(
+                  builder: (_) => StudentAvatar(
+                    name: person.name,
+                    photoUrl: person.photoUrl,
+                    radius: 42,
+                    editable: true,
+                    isLoading: viewModel.isUploadingPhoto,
+                    onTap: () => _changePhoto(context),
+                  ),
+                ),
               ),
               const SizedBox(height: 16),
               Text(person.name,
@@ -93,4 +101,22 @@ class StudentDetailScreen extends StatelessWidget {
           ],
         ),
       );
+
+  Future<void> _changePhoto(BuildContext context) async {
+    try {
+      final result = await viewModel.changePhoto();
+      final failure = result.failureOrNull;
+      if (failure != null && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(failure.message)),
+        );
+      }
+    } catch (error) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Não foi possível salvar a foto: $error')),
+        );
+      }
+    }
+  }
 }
